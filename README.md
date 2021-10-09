@@ -1,13 +1,11 @@
-# QT--Serial-Port-Assistant
-介绍
-
+# QT--Serial-port
 基于QT的串口助手，可以动态检测串口热插拔
 
-QT 5.12及以上版本稳定
+QT Creator 4.13编写
 
-安装教程
+用于电机驱动单元测试台架数据采集，接收来自STM32F1的串口数据对其进行采集整理与显示，数据协议如下：00  08  BF  01  0F  FF  02  0F  FF  03  0A  11  04  00  00  05  09  43  3C  00  00  FF 
 
-gitclone以后，用QT Creator运行
+分别是6个通道的AD数据加PWM占空比和电机转速，结尾的FF为结束标志位。
 
-![image](https://gudaobian.top/wp-content/uploads/2020/04/back-1024x691.png)
+后续需要对QT的UI界面进行优化
 

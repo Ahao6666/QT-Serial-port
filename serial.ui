@@ -266,19 +266,6 @@ padding:0 1px;
       <string>打开串口</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_1">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>91</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
@@ -347,6 +334,19 @@ padding:0 1px;
      </property>
      <property name="text">
       <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_1">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;串口号&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </widget>
@@ -509,7 +509,7 @@ padding:0 1px;
        <x>30</x>
        <y>90</y>
        <width>191</width>
-       <height>91</height>
+       <height>117</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -589,7 +589,7 @@ padding:0 1px;
        <x>0</x>
        <y>0</y>
        <width>631</width>
-       <height>381</height>
+       <height>251</height>
       </rect>
      </property>
      <property name="font">
@@ -606,6 +606,26 @@ border-radius: 10px;/*设置圆角的大小*/
 padding: 0 8px;/*如果没有内容光标在开始往后移动0.8像素点*/
 selection-background-color: darkgray;
    </string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="adc_data">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>280</y>
+       <width>461</width>
+       <height>101</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="textBrowser_4">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>280</y>
+       <width>151</width>
+       <height>101</height>
+      </rect>
      </property>
     </widget>
    </widget>

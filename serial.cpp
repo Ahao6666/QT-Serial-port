@@ -1,4 +1,4 @@
-/*------------------------------------
+﻿/*------------------------------------
  *          user
  *------------------------------------*/
 #include <include.h>
@@ -9,7 +9,7 @@ Serial::Serial(QWidget *parent)
 {
     ui->setupUi(this);
     //用户添加
-    Serial::setWindowTitle(tr("  串口调试助手V1.0 —— Adma 庄           个人网站：www.gudaobian.top"));
+    Serial::setWindowTitle(tr("Serial port test"));
     Timer0_Init();
     Timer1_Init();
     systemInit();
@@ -27,7 +27,7 @@ void Serial::systemInit()
     globlePort.setDataBits(QSerialPort::Data8);
     globlePort.setStopBits(QSerialPort::OneStop);
     //端口设定
-    ui->baudRateBox->setCurrentIndex(4);
+    ui->baudRateBox->setCurrentIndex(0);        //波特率9600
     //信号绑定到槽
     connect(ui->openButton,&QPushButton::clicked,this,&Serial::ButtonOpenPort);//打开串口信号
     connect(ui->sendTxtButton,&QPushButton::clicked,this,&Serial::ButtonSendPort);//发送文本信号
@@ -54,6 +54,7 @@ void Serial::on_textBrowser_textChanged()
 {
    //当文本框到底的时候自动下滑
    ui->textBrowser->moveCursor(QTextCursor::End);
+   ui->adc_data->moveCursor(QTextCursor::End);
 }
 /*--------------------------
  *      手动清除文本
@@ -62,19 +63,20 @@ void Serial::ButtonClear()
 
 {
    ui->textBrowser->clear();
+   ui->adc_data->clear();
 }
 /*--------------------------
  *      暂停、开始显示文本
  * ------------------------*/
 void Serial::ButtonStopShow()
 {
-    if(ui->pushButton_3->text() == QString("暂停显示"))
+    if(ui->pushButton_3->text() == QString(QStringLiteral("暂停显示")))
     {
-        ui->pushButton_3->setText(QString("开始显示"));
+        ui->pushButton_3->setText(QString(QStringLiteral("开始显示")));
     }
-    else if(ui->pushButton_3->text() == QString("开始显示"))
+    else if(ui->pushButton_3->text() == QString(QStringLiteral("开始显示")))
     {
-        ui->pushButton_3->setText(QString("暂停显示"));
+        ui->pushButton_3->setText(QString(QStringLiteral("暂停显示")));
     }
 }
 /*--------------------------
@@ -120,29 +122,6 @@ void Serial::Timer1_Task()
 {    
     qDebug()<<"定时器1";
     ui->textBrowser->clear();
-    /*
-    qDebug()<<"定时器1";
-    int z = 0;
-    for(int i = 0; i < ui->portBox->count();i++)
-    {
-        for(int j = 0; j < ui->portBox->count();j++)
-        {
-            qDebug()<<"portname:"<<globlePort.portName();
-            if(ui->portBox->itemText(j) == globlePort.portName())
-            {
-                z++;
-            }
-
-            //盒子里的和链表的不一样
-        }
-        if(z == 0)
-        {
-            ui->portBox->removeItem(i);
-            //staticList[i].
-        }
-        z = 0;
-    }
-    */
 
 }
 /*----------------------------------------------------------
@@ -164,7 +143,7 @@ static int Read_Serial_Port_Info()
 }
 void Serial::Read_Serial_Connect_Success()
 {
-    qDebug() << "寻找串口 返回值："<<Read_Serial_Port_Info() << endl;
+    qDebug() << "search port with return value:"<<Read_Serial_Port_Info() << endl;
     if(Read_Serial_Port_Info())
     {
         Serial_Connect_Success_Label_Text();
@@ -177,7 +156,7 @@ void Serial::Serial_Connect_Success_Label_Text()
     serialStrList.clear();
     serialStrList = scanSerial();
     for(int z = 0;z < serialStrList.size();z++)
-        qDebug()<<"链表1为"<<serialStrList[z];
+        qDebug()<<"List1 is"<<serialStrList[z];
     qDebug()<<"size:"<<serialStrList.size();
     //如果有新增的COM口，则scanSerial()会变为："COMx",这样将以前的字符串添加在新增的前面即可
     for(int i = 0;i<staticList.size();i++)
@@ -187,11 +166,11 @@ void Serial::Serial_Connect_Success_Label_Text()
     if(staticList != serialStrList)
     {
         for(int q = 0;q < serialStrList.size();q++)
-            qDebug()<<"链表2为"<<serialStrList[q];
+            qDebug()<<"List2 is"<<serialStrList[q];
         staticList = serialStrList;
         staticList = compilerport.compiler_port(staticList,staticList.size());
         for(int c = 0;c < staticList.size();c++)
-            qDebug()<<"链表3为"<<staticList[c];
+            qDebug()<<"List3 is"<<staticList[c];
         ui->portBox->clear();
         for (int i=0; i<staticList.size(); i++)
         {
@@ -204,7 +183,7 @@ void Serial::Serial_Connect_Success_Label_Text()
     QPalette pe;
     pe.setColor(QPalette::WindowText,Qt::darkGreen);
     ui->label_1->setPalette(pe);
-    ui->label_1->setText("已连接");
+    ui->label_1->setText(QStringLiteral("已连接"));
 }
 void Serial::Serial_Connect_NG_Label_Text()
 {
@@ -215,7 +194,7 @@ void Serial::Serial_Connect_NG_Label_Text()
     QPalette pe;
     pe.setColor(QPalette::WindowText,Qt::red);
     ui->label_1->setPalette(pe);
-    ui->label_1->setText("等待中");
+    ui->label_1->setText(QStringLiteral("等待中"));
 }
 /*----------------------------------------------------------
  *          判定串口是否重复
@@ -236,7 +215,7 @@ QStringList Serial::scanSerial()
             {
                 judge++;
             }
-            qDebug()<<judge<<"key测试";
+            qDebug()<<judge<<"key test";
         }
         if(judge == 0)
         {
@@ -250,14 +229,14 @@ QStringList Serial::scanSerial()
  *----------------------------------------------------------*/
 void Serial::ButtonOpenPort(bool)
 {
-    if(ui->openButton->text() == QString("打开串口"))  //串口未打开
+    if(ui->openButton->text() == QString(QStringLiteral("打开串口")))  //串口未打开
         {
             //设置端口号
             globlePort.setPortName(ui->portBox->currentText());
             //设置波特率
             globlePort.setBaudRate(ui->baudRateBox->currentText().toInt());
             //设置数据位
-            qDebug()<<"数据位"<<ui->DateBitsBox->currentText().toInt();
+            qDebug()<<"data bits:"<<ui->DateBitsBox->currentText().toInt();
             switch (ui->DateBitsBox->currentText().toInt())
             {             
                 case 8: globlePort.setDataBits(QSerialPort::Data8); break;
@@ -267,7 +246,7 @@ void Serial::ButtonOpenPort(bool)
                 default: break;
             }
             //设置停止位
-            qDebug()<<"停止位"<<ui->stopBitsBox->currentText().toInt();
+            qDebug()<<"stop bits:"<<ui->stopBitsBox->currentText().toInt();
             switch (ui->stopBitsBox->currentText().toInt())
             {
 
@@ -286,7 +265,7 @@ void Serial::ButtonOpenPort(bool)
             //打开串口出现错误
             if(globlePort.open(QIODevice::ReadWrite)==false)
             {
-                qDebug()<<"出现问题"<<ui->portBox->currentText();
+                qDebug()<<"some error"<<ui->portBox->currentText();
                 for(int i = 0;i < ui->portBox->count() ;i++)
                 {
                     if( ui->portBox->itemText(i) == ui->portBox->currentText())
@@ -297,7 +276,7 @@ void Serial::ButtonOpenPort(bool)
 
                 }
 
-                QMessageBox::warning(NULL , "提示", "串口打开失败！");
+                QMessageBox::warning(NULL , QStringLiteral("提示"), QStringLiteral("串口打开失败！"));
                 return;
             }
             // 失能串口设置控件
@@ -308,7 +287,7 @@ void Serial::ButtonOpenPort(bool)
             ui->stopBitsBox->setEnabled(false);
             //ui->search_Button->setEnabled(false);
             //调整串口控制按钮的文字提示
-            ui->openButton->setText(QString("关闭串口"));
+            ui->openButton->setText(QString(QStringLiteral("关闭串口")));
         }
         else       //串口已经打开
         {
@@ -321,7 +300,7 @@ void Serial::ButtonOpenPort(bool)
             ui->stopBitsBox->setEnabled(true);
             //ui->search_Button->setEnabled(true);
             //调整串口控制按钮的文字提示
-            ui->openButton->setText(QString("打开串口"));
+            ui->openButton->setText(QString(QStringLiteral("打开串口")));
          }
 }
 void Serial::ButtonSendPort(bool)
@@ -334,11 +313,13 @@ void Serial::ButtonSendPort(bool)
  *          recive Date
  *----------------------------------------------------------*/
 //读取接收到的数据
+QString str_data;
 void Serial::ReciveDate()
 {   
     static QByteArray Serial_buff;//定义static，否则会被清理
+    static QByteArray Serial_data;
     Serial_buff += globlePort.readAll();
-    if(ui->pushButton_3->text() == QString("暂停显示"))
+    if(ui->pushButton_3->text() == QString(QStringLiteral("暂停显示")))     //数据接收显示
     {
         //判断标志结束
         if(ui->checkBoxHex->isChecked() == false)
@@ -351,27 +332,40 @@ void Serial::ReciveDate()
                 Serial_buff.clear();//数据清理
             }
         }
-        else if(ui->checkBoxHex->isChecked() == true)
+        else if(ui->checkBoxHex->isChecked() == true)       //16进制显示开启
         {
-            if(Serial_buff.endsWith("\n"))
-            {
                 QString strDis;
                 QByteArray hexData = Serial_buff.toHex();
                 hexData = hexData.toUpper ();//转换为大写
-                for(int i = 0;i<hexData.length ();i+=2)//填加空格
+                for(int i = 0;i<hexData.length ()-1;i+=2)//填加空格
                 {
                     QString st = hexData.mid (i,2);
                     strDis += st;
                     strDis += "  ";
+                    str_data += st;
+                    str_data += "";
                 }
+                if(str_data.length()==44){
+                    str_data += "\n";
+                    Serial_data.clear();
+                    Serial_data.append(str_data);
+                    QString st = Serial_data.mid (2,4);
+                    bool ok;
+                    qDebug()<<st.toInt(&ok, 16);
+                    ui->textBrowser_4->insertPlainText(st);
+                    ui->adc_data->insertPlainText(Serial_data);
+                    Serial_data.clear();//数据清理
+                    str_data = "";
+                }
+
+
                 Serial_buff.clear();//先清空，以防已接收的部分变成乱码
                 Serial_buff.append(strDis);
                 ui->textBrowser->insertPlainText(Serial_buff);
                 Serial_buff.clear();//数据清理
-            }
         }
     }
-    else if(ui->pushButton_3->text() == QString("开始显示"))
+    else if(ui->pushButton_3->text() == QString(QStringLiteral("开始显示")))
     {
         Serial_buff.clear();
     }
