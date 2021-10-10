@@ -1,6 +1,7 @@
 QT       += core gui
 QT       += serialport
 QT       += core
+QT       += axcontainer
 RC_ICONS = favicon_3.ico
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

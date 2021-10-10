@@ -14,15 +14,18 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QTextEdit>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -32,6 +35,8 @@ class Ui_Serial
 public:
     QAction *actionhh;
     QWidget *centralwidget;
+    QTabWidget *tabWidget;
+    QWidget *tab;
     QGroupBox *groupBox;
     QComboBox *portBox;
     QComboBox *baudRateBox;
@@ -55,23 +60,30 @@ public:
     QPushButton *pushButton_3;
     QSpacerItem *horizontalSpacer_3;
     QWidget *layoutWidget1;
-    QVBoxLayout *verticalLayout;
+    QFormLayout *formLayout;
+    QSpacerItem *verticalSpacer;
     QCheckBox *checkBox;
     QCheckBox *checkBoxHex;
+    QSpacerItem *verticalSpacer_2;
     QGroupBox *groupBox_3;
     QTextBrowser *textBrowser;
-    QTextEdit *adc_data;
-    QTextBrowser *textBrowser_4;
     QGroupBox *groupBox_4;
     QTextEdit *textEdit;
+    QWidget *tab_2;
+    QGroupBox *groupBox_5;
+    QTextEdit *adc_data;
+    QGroupBox *groupBox_6;
+    QTableWidget *qTableWidget;
+    QPushButton *pushButton_tab2_save;
+    QPushButton *pushButton_tab2_clear;
 
     void setupUi(QMainWindow *Serial)
     {
         if (Serial->objectName().isEmpty())
             Serial->setObjectName(QString::fromUtf8("Serial"));
-        Serial->resize(1030, 650);
-        Serial->setMinimumSize(QSize(1030, 650));
-        Serial->setMaximumSize(QSize(1030, 650));
+        Serial->resize(1150, 660);
+        Serial->setMinimumSize(QSize(1150, 660));
+        Serial->setMaximumSize(QSize(1150, 660));
         Serial->setLayoutDirection(Qt::LeftToRight);
         Serial->setStyleSheet(QString::fromUtf8("QMainWindow{\n"
 "background-color: rgb(245, 245, 245);\n"
@@ -81,9 +93,15 @@ public:
         actionhh->setObjectName(QString::fromUtf8("actionhh"));
         centralwidget = new QWidget(Serial);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        groupBox = new QGroupBox(centralwidget);
+        tabWidget = new QTabWidget(centralwidget);
+        tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
+        tabWidget->setGeometry(QRect(10, 0, 1121, 651));
+        tabWidget->setTabBarAutoHide(false);
+        tab = new QWidget();
+        tab->setObjectName(QString::fromUtf8("tab"));
+        groupBox = new QGroupBox(tab);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(20, 20, 341, 381));
+        groupBox->setGeometry(QRect(20, 10, 341, 381));
         groupBox->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
 "background-color: rgb(240, 240, 240);\n"
 "\n"
@@ -190,9 +208,9 @@ public:
         label_1 = new QLabel(groupBox);
         label_1->setObjectName(QString::fromUtf8("label_1"));
         label_1->setGeometry(QRect(20, 20, 91, 51));
-        groupBox_2 = new QGroupBox(centralwidget);
+        groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(20, 420, 341, 211));
+        groupBox_2->setGeometry(QRect(20, 410, 341, 211));
         groupBox_2->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
 "background-color: rgb(240, 240, 240);\n"
 "\n"
@@ -224,16 +242,13 @@ public:
         sendTxtButton = new QPushButton(groupBox_2);
         sendTxtButton->setObjectName(QString::fromUtf8("sendTxtButton"));
         sendTxtButton->setGeometry(QRect(190, 100, 121, 71));
-        QFont font1;
-        font1.setBold(false);
-        font1.setWeight(50);
-        sendTxtButton->setFont(font1);
+        sendTxtButton->setFont(font);
         sendTxtButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:8px 25px;border-style: outset;}\n"
 "                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
 "                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
         layoutWidget = new QWidget(groupBox_2);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(0, 0, 341, 101));
+        layoutWidget->setGeometry(QRect(0, 40, 338, 32));
         horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -243,6 +258,9 @@ public:
 
         pushButton_2 = new QPushButton(layoutWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        QFont font1;
+        font1.setBold(false);
+        font1.setWeight(50);
         pushButton_2->setFont(font1);
         pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:8px 15px;border-style: outset;}\n"
 "                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
@@ -269,25 +287,34 @@ public:
 
         layoutWidget1 = new QWidget(groupBox_2);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(30, 90, 191, 117));
-        verticalLayout = new QVBoxLayout(layoutWidget1);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        layoutWidget1->setGeometry(QRect(31, 86, 103, 121));
+        formLayout = new QFormLayout(layoutWidget1);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setContentsMargins(0, 0, 0, 0);
+        verticalSpacer = new QSpacerItem(20, 17, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        formLayout->setItem(0, QFormLayout::LabelRole, verticalSpacer);
+
         checkBox = new QCheckBox(layoutWidget1);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
         checkBox->setFont(font1);
 
-        verticalLayout->addWidget(checkBox);
+        formLayout->setWidget(1, QFormLayout::LabelRole, checkBox);
 
         checkBoxHex = new QCheckBox(layoutWidget1);
         checkBoxHex->setObjectName(QString::fromUtf8("checkBoxHex"));
         checkBoxHex->setFont(font1);
 
-        verticalLayout->addWidget(checkBoxHex);
+        formLayout->setWidget(2, QFormLayout::LabelRole, checkBoxHex);
 
-        groupBox_3 = new QGroupBox(centralwidget);
+        verticalSpacer_2 = new QSpacerItem(20, 48, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        formLayout->setItem(3, QFormLayout::LabelRole, verticalSpacer_2);
+
+        groupBox_3 = new QGroupBox(tab);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-        groupBox_3->setGeometry(QRect(380, 20, 631, 381));
+        groupBox_3->setEnabled(true);
+        groupBox_3->setGeometry(QRect(380, 10, 721, 381));
         groupBox_3->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
 "background-color: rgb(255, 255, 255);\n"
 "\n"
@@ -317,7 +344,7 @@ public:
 "}"));
         textBrowser = new QTextBrowser(groupBox_3);
         textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-        textBrowser->setGeometry(QRect(0, 0, 631, 251));
+        textBrowser->setGeometry(QRect(0, 0, 721, 381));
         QFont font2;
         font2.setFamily(QString::fromUtf8("\345\256\213\344\275\223"));
         font2.setPointSize(9);
@@ -329,15 +356,10 @@ public:
 "padding: 0 8px;/*\345\246\202\346\236\234\346\262\241\346\234\211\345\206\205\345\256\271\345\205\211\346\240\207\345\234\250\345\274\200\345\247\213\345\276\200\345\220\216\347\247\273\345\212\2500.8\345\203\217\347\264\240\347\202\271*/\n"
 "selection-background-color: darkgray;\n"
 "   "));
-        adc_data = new QTextEdit(groupBox_3);
-        adc_data->setObjectName(QString::fromUtf8("adc_data"));
-        adc_data->setGeometry(QRect(0, 280, 461, 101));
-        textBrowser_4 = new QTextBrowser(groupBox_3);
-        textBrowser_4->setObjectName(QString::fromUtf8("textBrowser_4"));
-        textBrowser_4->setGeometry(QRect(470, 280, 151, 101));
-        groupBox_4 = new QGroupBox(centralwidget);
+        groupBox_4 = new QGroupBox(tab);
         groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-        groupBox_4->setGeometry(QRect(380, 420, 631, 211));
+        groupBox_4->setEnabled(true);
+        groupBox_4->setGeometry(QRect(380, 410, 721, 211));
         groupBox_4->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
 "background-color: rgb(255, 255, 255);\n"
 "\n"
@@ -367,7 +389,8 @@ public:
 "}"));
         textEdit = new QTextEdit(groupBox_4);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(0, 0, 631, 211));
+        textEdit->setEnabled(true);
+        textEdit->setGeometry(QRect(0, 0, 721, 211));
         QFont font3;
         font3.setFamily(QString::fromUtf8("Arial"));
         font3.setPointSize(10);
@@ -379,9 +402,105 @@ public:
 "padding: 0 8px;/*\345\246\202\346\236\234\346\262\241\346\234\211\345\206\205\345\256\271\345\205\211\346\240\207\345\234\250\345\274\200\345\247\213\345\276\200\345\220\216\347\247\273\345\212\2500.8\345\203\217\347\264\240\347\202\271*/\n"
 "selection-background-color: darkgray;\n"
 "   "));
+        tabWidget->addTab(tab, QString());
+        tab_2 = new QWidget();
+        tab_2->setObjectName(QString::fromUtf8("tab_2"));
+        groupBox_5 = new QGroupBox(tab_2);
+        groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
+        groupBox_5->setGeometry(QRect(10, 10, 341, 501));
+        groupBox_5->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
+"background-color: rgb(255, 255, 255);\n"
+"\n"
+"border-width:2px;\n"
+"\n"
+"\n"
+"border-radius: 10px;\n"
+"\n"
+"border-color:rgb(221, 221, 221);\n"
+"\n"
+"margin-top:0.5ex;\n"
+"\n"
+"}\n"
+"\n"
+"QGroupBox::title{\n"
+"\n"
+"subcontrol-origin:margin;\n"
+"\n"
+"subcontrol-position:top left;\n"
+"\n"
+"left:10px;\n"
+"\n"
+"margin-left:0px;\n"
+"\n"
+"padding:0 1px;\n"
+"\n"
+"}"));
+        adc_data = new QTextEdit(groupBox_5);
+        adc_data->setObjectName(QString::fromUtf8("adc_data"));
+        adc_data->setGeometry(QRect(0, 0, 341, 501));
+        adc_data->setLayoutDirection(Qt::LeftToRight);
+        adc_data->setStyleSheet(QString::fromUtf8("border: 1px solid gray;/*\350\256\276\347\275\256\350\276\271\346\241\206\347\232\204\347\262\227\347\273\206\357\274\214\344\273\245\345\217\212\351\242\234\350\211\262*/\n"
+"border-radius: 10px;/*\350\256\276\347\275\256\345\234\206\350\247\222\347\232\204\345\244\247\345\260\217*/\n"
+"padding: 0 8px;/*\345\246\202\346\236\234\346\262\241\346\234\211\345\206\205\345\256\271\345\205\211\346\240\207\345\234\250\345\274\200\345\247\213\345\276\200\345\220\216\347\247\273\345\212\2500.8\345\203\217\347\264\240\347\202\271*/\n"
+"selection-background-color: darkgray;\n"
+"   "));
+        groupBox_6 = new QGroupBox(tab_2);
+        groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
+        groupBox_6->setGeometry(QRect(370, 10, 731, 501));
+        groupBox_6->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
+"background-color: rgb(255, 255, 255);\n"
+"\n"
+"border-width:2px;\n"
+"\n"
+"\n"
+"border-radius: 10px;\n"
+"\n"
+"border-color:rgb(221, 221, 221);\n"
+"\n"
+"margin-top:0.5ex;\n"
+"\n"
+"}\n"
+"\n"
+"QGroupBox::title{\n"
+"\n"
+"subcontrol-origin:margin;\n"
+"\n"
+"subcontrol-position:top left;\n"
+"\n"
+"left:10px;\n"
+"\n"
+"margin-left:0px;\n"
+"\n"
+"padding:0 1px;\n"
+"\n"
+"}"));
+        qTableWidget = new QTableWidget(groupBox_6);
+        qTableWidget->setObjectName(QString::fromUtf8("qTableWidget"));
+        qTableWidget->setGeometry(QRect(0, 0, 731, 501));
+        qTableWidget->setStyleSheet(QString::fromUtf8("border: 1px solid gray;/*\350\256\276\347\275\256\350\276\271\346\241\206\347\232\204\347\262\227\347\273\206\357\274\214\344\273\245\345\217\212\351\242\234\350\211\262*/\n"
+"border-radius: 10px;/*\350\256\276\347\275\256\345\234\206\350\247\222\347\232\204\345\244\247\345\260\217*/\n"
+"selection-background-color: darkgray;"));
+        pushButton_tab2_save = new QPushButton(tab_2);
+        pushButton_tab2_save->setObjectName(QString::fromUtf8("pushButton_tab2_save"));
+        pushButton_tab2_save->setGeometry(QRect(930, 540, 111, 51));
+        pushButton_tab2_save->setFont(font);
+        pushButton_tab2_save->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}\n"
+"                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
+"                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
+        pushButton_tab2_clear = new QPushButton(tab_2);
+        pushButton_tab2_clear->setObjectName(QString::fromUtf8("pushButton_tab2_clear"));
+        pushButton_tab2_clear->setGeometry(QRect(760, 540, 111, 51));
+        pushButton_tab2_clear->setFont(font);
+        pushButton_tab2_clear->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}\n"
+"                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
+"                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
+        tabWidget->addTab(tab_2, QString());
         Serial->setCentralWidget(centralwidget);
 
         retranslateUi(Serial);
+
+        tabWidget->setCurrentIndex(1);
+
 
         QMetaObject::connectSlotsByName(Serial);
     } // setupUi
@@ -422,6 +541,12 @@ public:
         checkBoxHex->setText(QApplication::translate("Serial", "\345\215\201\345\205\255\350\277\233\345\210\266\346\230\276\347\244\272", nullptr));
         groupBox_3->setTitle(QString());
         groupBox_4->setTitle(QString());
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("Serial", "data receive", nullptr));
+        groupBox_5->setTitle(QString());
+        groupBox_6->setTitle(QString());
+        pushButton_tab2_save->setText(QApplication::translate("Serial", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
+        pushButton_tab2_clear->setText(QApplication::translate("Serial", "\346\270\205\351\231\244\346\225\260\346\215\256", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Serial", "data process", nullptr));
     } // retranslateUi
 
 };

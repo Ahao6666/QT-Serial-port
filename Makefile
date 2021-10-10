@@ -241,6 +241,7 @@ Makefile: serial.pro D:\Qt\install\5.12.10\msvc2017_64\mkspecs\win32-msvc\qmake.
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\moc.prf \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\win32\opengl.prf \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\uic.prf \
+		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\win32\dumpcpp.prf \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\qmake_use.prf \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\file_copies.prf \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\win32\windows.prf \
@@ -249,6 +250,8 @@ Makefile: serial.pro D:\Qt\install\5.12.10\msvc2017_64\mkspecs\win32-msvc\qmake.
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\yacc.prf \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\lex.prf \
 		serial.pro \
+		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxContainer.prl \
+		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxBase.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Widgets.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Gui.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5SerialPort.prl \
@@ -419,6 +422,7 @@ D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\qt.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\moc.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\win32\opengl.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\uic.prf:
+D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\win32\dumpcpp.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\qmake_use.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\file_copies.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\win32\windows.prf:
@@ -427,6 +431,8 @@ D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\exceptions.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\yacc.prf:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\lex.prf:
 serial.pro:
+D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxContainer.prl:
+D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxBase.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Widgets.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Gui.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5SerialPort.prl:
