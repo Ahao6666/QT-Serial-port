@@ -117,6 +117,8 @@ Makefile: serial.pro D:\Qt\install\5.12.10\msvc2017_64\mkspecs\win32-msvc\qmake.
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_bluetooth.pri \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_bluetooth_private.pri \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_bootstrap_private.pri \
+		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_charts.pri \
+		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_charts_private.pri \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_concurrent.pri \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_concurrent_private.pri \
 		D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_core.pri \
@@ -252,6 +254,7 @@ Makefile: serial.pro D:\Qt\install\5.12.10\msvc2017_64\mkspecs\win32-msvc\qmake.
 		serial.pro \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxContainer.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxBase.prl \
+		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Charts.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Widgets.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Gui.prl \
 		D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5SerialPort.prl \
@@ -298,6 +301,8 @@ D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_axserver_private.pri:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_bluetooth.pri:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_bluetooth_private.pri:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_bootstrap_private.pri:
+D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_charts.pri:
+D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_charts_private.pri:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_concurrent.pri:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_concurrent_private.pri:
 D:\Qt\install\5.12.10\msvc2017_64\mkspecs\modules\qt_lib_core.pri:
@@ -433,6 +438,7 @@ D:\Qt\install\5.12.10\msvc2017_64\mkspecs\features\lex.prf:
 serial.pro:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxContainer.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5AxBase.prl:
+D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Charts.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Widgets.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5Gui.prl:
 D:\Qt\install\5.12.10\msvc2017_64\lib\Qt5SerialPort.prl:

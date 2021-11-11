@@ -12,6 +12,10 @@
 #include <QUrl>
 #include <QFileDialog>
 #include <QAxObject>
+#include <QDateTime>
+#include <QtCharts>
+#include <QChartView>
+#include <QSplineSeries>
 
 Serial::Serial(QWidget *parent)
     : QMainWindow(parent)
@@ -24,25 +28,75 @@ Serial::Serial(QWidget *parent)
     Timer1_Init();
     systemInit();
     table_init();
+    table_tab3_init();
+//    chart_init();
 }
-
+/*----------------------------------------------------------
+ *          表格初始化显示
+ *----------------------------------------------------------*/
 void Serial::table_init(){
     ui->qTableWidget->setColumnCount(9);        //设置列数
     ui->qTableWidget->setRowCount(1);          //设置行数
     ui->qTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->qTableWidget->setWindowTitle("QTableWidget");
     QStringList m_Header;
-    m_Header<<QString("No.")<<QString("ADC0")<<QString("ADC1")<<QString("ADC2")<<QString("ADC3")<<QString("ADC4")<<QString("ADC5")<<QString("PWM")<<QString("motor speed(r/s)");
+    m_Header<<QString("Time")<<QString("ADC0")<<QString("ADC1")<<QString("ADC2")<<QString("ADC3")<<QString("ADC4")<<QString("ADC5")<<QString("PWM")<<QString("motor speed(r/s)");
     ui->qTableWidget->setHorizontalHeaderLabels(m_Header);              //添加横向表头
     ui->qTableWidget->verticalHeader()->setVisible(false);               //纵向表头不可视化
     ui->qTableWidget->horizontalHeader()->setVisible(true);             //横向表头可视化
-    ui->qTableWidget->setShowGrid(false);                               //隐藏栅格
+    ui->qTableWidget->setShowGrid(true);                               //隐藏栅格
     ui->qTableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);      //设置表格选择方式：设置表格为单元选中
     ui->qTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);         //选择目标方式
     ui->qTableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);          //设置水平滚动条
     ui->qTableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);            //设置垂直滚动条
     ui->qTableWidget->setStyleSheet("selection-background-color:pink");             //设置选中颜色：粉色
 }
+/*----------------------------------------------------------
+ *          表格初始化显示tab3 table init
+ *----------------------------------------------------------*/
+void Serial::table_tab3_init(){
+    ui->table_convert->setColumnCount(9);        //设置列数
+    ui->table_convert->setRowCount(1);          //设置行数
+    ui->table_convert->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->table_convert->setWindowTitle("table_convert");
+    QStringList m_Header;
+    m_Header<<QString("Time")<<QString("Fx(N)")<<QString("Fy(N)")<<QString("Fz(N)")<<QString("Mx(Nm)")<<QString("My(Nm)")<<QString("Mz(Nm)")<<QString("PWM")<<QString("motor speed(r/s)");
+    ui->table_convert->setHorizontalHeaderLabels(m_Header);              //添加横向表头
+    ui->table_convert->verticalHeader()->setVisible(false);               //纵向表头不可视化
+    ui->table_convert->horizontalHeader()->setVisible(true);             //横向表头可视化
+    ui->table_convert->setShowGrid(true);                               //隐藏栅格
+    ui->table_convert->setSelectionBehavior(QAbstractItemView::SelectRows);      //设置表格选择方式：设置表格为行选中
+    ui->table_convert->setSelectionMode(QAbstractItemView::SingleSelection);         //选择目标方式
+    ui->table_convert->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);          //设置水平滚动条
+    ui->table_convert->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);            //设置垂直滚动条
+    ui->table_convert->setStyleSheet("selection-background-color:pink");             //设置选中颜色：粉色
+}
+/*----------------------------------------------------------
+ *          折线图初始化显示
+ *----------------------------------------------------------*/
+QChart *mChart;    //创建图表对象
+QLineSeries *lineSeries_0 = new QLineSeries();        //创建折线系列
+/*
+void Serial::chart_init(){
+    mChart = new QChart();                          //创建图标对象
+
+    QChartView *chartView = new QChartView();
+
+    mChart->addSeries(lineSeries_0);                  //向图表中添加系列
+
+    lineSeries_0->setPen(QPen(Qt::black,2,Qt::SolidLine));
+    lineSeries_0->setName(QStringLiteral("Fx"));
+
+    mChart->createDefaultAxes();                       //创建默认的坐标，必须在addSeries之后调用
+    mChart->setTheme(QChart::ChartThemeDark);           //设置图标主题
+    mChart->setTitle(QStringLiteral("力/力矩传感器数据采集"));        //设置图标名称
+    mChart->legend()->show();                          //显示图例
+    chartView->setChart(mChart);                        //向chartView中添加图标
+    chartView->resize(QSize(500,300));                  //重新设置chartView的大小
+    chartView->setRenderHints(QPainter::Antialiasing);//消除边缘，看起来平滑一些
+    ui->horizontalLayout_chart->addWidget(chartView);     //把chartView放到水平布局中（在ui中拖一个水平布局）
+}
+*/
 Serial::~Serial()
 {
     delete ui;
@@ -56,7 +110,7 @@ void Serial::systemInit()
     globlePort.setDataBits(QSerialPort::Data8);
     globlePort.setStopBits(QSerialPort::OneStop);
     //端口设定
-    ui->baudRateBox->setCurrentIndex(0);        //波特率9600
+    ui->baudRateBox->setCurrentIndex(4);        //波特率9600
     //信号绑定到槽
     connect(ui->openButton,&QPushButton::clicked,this,&Serial::ButtonOpenPort);//打开串口信号
     connect(ui->sendTxtButton,&QPushButton::clicked,this,&Serial::ButtonSendPort);//发送文本信号
@@ -85,6 +139,7 @@ void Serial::on_textBrowser_textChanged()
    ui->textBrowser->moveCursor(QTextCursor::End);
    ui->adc_data->moveCursor(QTextCursor::End);
    ui->qTableWidget->scrollToBottom();
+   ui->table_convert->scrollToBottom();
 }
 /*--------------------------
  *      手动清除文本
@@ -101,6 +156,9 @@ void Serial::on_pushButton_tab2_clear_clicked(){
     ui->qTableWidget->clear();
     ui->adc_data->clear();
 }
+void Serial::on_pushButton_tab3_clear_clicked(){
+    ui->table_convert->clear();
+}
 /*--------------------------
  *      暂停、开始显示文本
  * ------------------------*/
@@ -116,7 +174,7 @@ void Serial::ButtonStopShow()
     }
 }
 /*--------------------------
- *      将表格数据保存到EXCEL文件
+ *      将表格数据保存到EXCEL文件tab2_save
  * ------------------------*/
 void Serial::on_pushButton_tab2_save_clicked(){
     QString fileName = QFileDialog::getSaveFileName(ui->qTableWidget, "保存",
@@ -139,6 +197,102 @@ void Serial::on_pushButton_tab2_save_clicked(){
             //标题行
             cell=worksheet->querySubObject("Cells(int,int)", 1, 1);
             cell->dynamicCall("SetValue(const QString&)", "ADC convert data");
+            cell->querySubObject("Font")->setProperty("Size", 18);
+            //调整行高
+            worksheet->querySubObject("Range(const QString&)", "1:1")->setProperty("RowHeight", 30);
+            //合并标题行
+            QString cellTitle;
+            cellTitle.append("A1:");
+            cellTitle.append(QChar(colcount - 1 + 'A'));
+            cellTitle.append(QString::number(1));
+            QAxObject *range = worksheet->querySubObject("Range(const QString&)", cellTitle);
+            range->setProperty("WrapText", true);
+            range->setProperty("MergeCells", true);
+            range->setProperty("HorizontalAlignment", -4108);//xlCenter
+            range->setProperty("VerticalAlignment", -4108);//xlCenter
+
+            //列标题
+            for(i=0;i<colcount;i++)
+            {
+                QString columnName;
+                columnName.append(QChar(i  + 'A'));
+                columnName.append(":");
+                columnName.append(QChar(i + 'A'));
+                col = worksheet->querySubObject("Columns(const QString&)", columnName);
+                col->setProperty("ColumnWidth", ui->qTableWidget->columnWidth(i)/6);
+                cell=worksheet->querySubObject("Cells(int,int)", 2, i+1);
+                columnName=ui->qTableWidget->horizontalHeaderItem(i)->text();
+                cell->dynamicCall("SetValue(const QString&)", columnName);
+                cell->querySubObject("Font")->setProperty("Bold", true);
+                cell->querySubObject("Interior")->setProperty("Color",QColor(191, 191, 191));
+                cell->setProperty("HorizontalAlignment", -4108);//xlCenter
+                cell->setProperty("VerticalAlignment", -4108);//xlCenter
+            }
+
+            //数据区
+            for(i=0;i<ui->qTableWidget->rowCount();i++){
+                for (j=0;j<colcount;j++)
+                {
+                    worksheet->querySubObject("Cells(int,int)", i+3, j+1)->dynamicCall("SetValue(const QString&)", ui->qTableWidget->item(i,j)?ui->qTableWidget->item(i,j)->text():"");
+                }
+            }
+
+            //画框线
+            QString lrange;
+            lrange.append("A2:");
+            lrange.append(colcount - 1 + 'A');
+            lrange.append(QString::number(ui->qTableWidget->rowCount() + 2));
+            range = worksheet->querySubObject("Range(const QString&)", lrange);
+            range->querySubObject("Borders")->setProperty("LineStyle", QString::number(1));
+            range->querySubObject("Borders")->setProperty("Color", QColor(0, 0, 0));
+
+            //调整数据区行高
+            QString rowsName;
+            rowsName.append("2:");
+            rowsName.append(QString::number(ui->qTableWidget->rowCount() + 2));
+            range = worksheet->querySubObject("Range(const QString&)", rowsName);
+            range->setProperty("RowHeight", 20);
+            workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(fileName));//保存至fileName
+            workbook->dynamicCall("Close()");//关闭工作簿
+            excel->dynamicCall("Quit()");//关闭excel
+            delete excel;
+            excel=NULL;
+
+            if (QMessageBox::question(NULL,QStringLiteral("完成"),QStringLiteral("文件已经导出，是否现在打开？"),QMessageBox::Yes|QMessageBox::No)==QMessageBox::Yes)
+            {
+                QDesktopServices::openUrl(QUrl("file:///" + QDir::toNativeSeparators(fileName)));
+            }
+        }
+        else
+        {
+            QMessageBox::warning(NULL,QStringLiteral("错误"),QStringLiteral("未能创建 Excel 对象，请安装 Microsoft Excel."),QMessageBox::Apply);
+        }
+    }
+}
+/*--------------------------
+ *      将表格数据保存到EXCEL文件tab3_save
+ * ------------------------*/
+void Serial::on_pushButton_tab3_save_clicked(){
+    QString fileName = QFileDialog::getSaveFileName(ui->qTableWidget, "保存",
+            QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+            QStringLiteral("Excel 文件(*.xlsx)"));
+    if (fileName!="")
+    {
+        QAxObject *excel = new QAxObject;
+        if (excel->setControl("Excel.Application")) //连接Excel控件
+        {
+            excel->dynamicCall("SetVisible (bool Visible)","false");//不显示窗体
+            excel->setProperty("DisplayAlerts", false);//不显示任何警告信息。如果为true那么在关闭是会出现类似“文件已修改，是否保存”的提示
+            QAxObject *workbooks = excel->querySubObject("WorkBooks");//获取工作簿集合
+            workbooks->dynamicCall("Add");//新建一个工作簿
+            QAxObject *workbook = excel->querySubObject("ActiveWorkBook");//获取当前工作簿
+            QAxObject *worksheet = workbook->querySubObject("Worksheets(int)", 1);
+            int i,j,colcount=ui->qTableWidget->columnCount();
+            QAxObject *cell,*col;
+
+            //标题行
+            cell=worksheet->querySubObject("Cells(int,int)", 1, 1);
+            cell->dynamicCall("SetValue(const QString&)", "Force/Torque convert data");
             cell->querySubObject("Font")->setProperty("Size", 18);
             //调整行高
             worksheet->querySubObject("Range(const QString&)", "1:1")->setProperty("RowHeight", 30);
@@ -449,6 +603,8 @@ QString str_data;
 static int row=0;
 void Serial::ReciveDate()
 {   
+    QString str_temp;
+    QString str_data_res;
     static QByteArray Serial_buff;//定义static，否则会被清理
     static QByteArray Serial_data;
     Serial_buff += globlePort.readAll();
@@ -470,24 +626,27 @@ void Serial::ReciveDate()
                 QString strDis;
                 QByteArray hexData = Serial_buff.toHex();
                 hexData = hexData.toUpper ();                   //转换为大写
+
                 for(int i = 0;i<hexData.length ()-1;i+=2)       //填加空格
                 {
                     QString st = hexData.mid (i,2);
                     strDis += st;
                     strDis += "  ";
-                    str_data += st;
-                    str_data += "";
-                }
-                if(str_data.length()==44){
-                    str_data += "\n";
-                    Serial_data.clear();
-                    Serial_data.append(str_data);
-                    table_show(Serial_data,row++);            //表格数据处理显示
-                    ui->adc_data->insertPlainText(Serial_data);
-                    Serial_data.clear();//数据清理
-                    str_data = "";
                 }
 
+                str_temp.prepend(hexData);      //将QByteArray转化为Qstring型
+                str_data += str_temp;           //str_data作为接收数据的存储变量，将新接收的数据添加到后面
+                for(int i=0;i<str_data.length();++i){
+                    if(str_data.mid(i,4)=="0800"&&str_data.length()>=i+46){
+                        str_data_res = str_data.mid(i,46);
+                        str_data_res += "\n";
+                        ui->adc_data->insertPlainText(str_data_res);
+                        table_show(str_data_res,row++);            //表格数据处理显示
+                        str_data_res = "";
+                        str_data = str_data.mid(i+46);
+                    }
+
+                }
                 Serial_buff.clear();//先清空，以防已接收的部分变成乱码
                 Serial_buff.append(strDis);
                 ui->textBrowser->insertPlainText(Serial_buff);
@@ -500,33 +659,86 @@ void Serial::ReciveDate()
     }
 }
 
-void Serial::table_show(QByteArray serial_temp,int row){
+void Serial::table_show(QString serial_temp,int row){
 
     ui->qTableWidget->insertRow(row+1);
+    ui->table_convert->insertRow(row+1);
     bool ok;
     QString str_num;
     int num;
     int adc_d;
     float pwm_value;
     int motor_speed;
-    ui->qTableWidget->setItem(row,0,new QTableWidgetItem(QString::number(row)));
-    for(int i=0;i<=30;i=i+6){
+    QDateTime dateTime(QDateTime::currentDateTime());
+    QString time = dateTime.toString("hh:mm:ss.zzz");
+    ui->qTableWidget->setItem(row,0,new QTableWidgetItem(time));
+    ui->table_convert->setItem(row,0,new QTableWidgetItem(time));
+    ui->qTableWidget->item(row,0)->setTextAlignment(Qt::AlignCenter);             //数据中间对齐
+    ui->table_convert->item(row,0)->setTextAlignment(Qt::AlignCenter);
+    for(int i=2;i<=32;i=i+6){
         str_num = serial_temp.mid (i,2);
         num = str_num.toInt(&ok, 16);
         if(num>=0&&num<=5){
             str_num = serial_temp.mid (i+2,4);
             adc_d = str_num.toInt(&ok, 16);
-            //ui->qTableWidget->item(row,num+1)->setTextAlignment(Qt::AlignCenter);             //数据中间对齐
-            ui->qTableWidget->setItem(row,num+1,new QTableWidgetItem(QString::number(adc_d)));      //ADC显示
+            ui->qTableWidget->setItem(row,num+1,new QTableWidgetItem(QString::number(adc_d)));      //tab2 ADC显示
+            ui->qTableWidget->item(row,num+1)->setTextAlignment(Qt::AlignCenter);             //数据中间对齐
+            table_show_tab3(row,num+1,adc_d);                       //tab3 物理量显示
+//            chart_show(num,adc_d);
         }
         else
             QMessageBox::warning(NULL , QStringLiteral("提示"), QStringLiteral("数据接收错误"));
     }
-    str_num = serial_temp.mid (36,2);
+    str_num = serial_temp.mid (38,2);
     pwm_value = str_num.toInt(&ok, 16)/100.0;
     ui->qTableWidget->setItem(row,7,new QTableWidgetItem(QString::number(pwm_value)));      //PWM显示
-    str_num = serial_temp.mid (38,4);
+    ui->table_convert->setItem(row,7,new QTableWidgetItem(QString::number(pwm_value)));      //PWM显示
+    ui->qTableWidget->item(row,7)->setTextAlignment(Qt::AlignCenter);             //数据中间对齐
+    ui->table_convert->item(row,7)->setTextAlignment(Qt::AlignCenter);
+    str_num = serial_temp.mid (40,4);
     motor_speed = str_num.toInt(&ok, 16);
     ui->qTableWidget->setItem(row,8,new QTableWidgetItem(QString::number(motor_speed)));      //电机转速显示
+    ui->table_convert->setItem(row,8,new QTableWidgetItem(QString::number(motor_speed)));      //电机转速显示
+    ui->qTableWidget->item(row,8)->setTextAlignment(Qt::AlignCenter);             //数据中间对齐
+    ui->table_convert->item(row,8)->setTextAlignment(Qt::AlignCenter);
 }
+void Serial::table_show_tab3(int row, int col, int adc){            //-----------还需要修改---
+    float Fz_a = adc / 4096 * 3.3;
+    float Fz_N = 206.2 * Fz_a;
+    ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Fz_N)));
+    ui->table_convert->item(row,col)->setTextAlignment(Qt::AlignCenter);
+}
+/*
+void Serial::chart_show(int channel, int adc){
+    mChart = new QChart();
+
+    lineSeries_0->append(row, adc);             //添加到数据系列中的点会被自动显示（如果该点处在显示区间的话）
+    auto xAxis = mChart->axes(Qt::Horizontal);
+    QValueAxis *axisX = dynamic_cast<QValueAxis*>(mChart->axisX());
+    qreal cur_x_min = axisX->min();//当前X轴显示区间的最小x值
+    qreal cur_x_max = axisX->max();
+
+    if(row > cur_x_max)//新的x值处在X轴显示区的之外了
+    {
+        qreal error = row - cur_x_max;//X轴的显示区向右挪error距离即可把新x显示出来
+        mChart->axisX()->setRange(cur_x_min + error + 5, cur_x_max + error + 5);
+    }
+    //mChart->axisY()->setRange(-2, 2);
+    mChart->createDefaultAxes();
+
+    QChartView *chartView = new QChartView();
+    mChart->addSeries(lineSeries_0);                  //向图表中添加系列
+    lineSeries_0->setPen(QPen(Qt::black,2,Qt::SolidLine));
+    lineSeries_0->setName(QStringLiteral("Fx"));
+    mChart->createDefaultAxes();                       //创建默认的坐标，必须在addSeries之后调用
+    mChart->setTheme(QChart::ChartThemeDark);           //设置图标主题
+    mChart->setTitle(QStringLiteral("力/力矩传感器数据采集"));        //设置图标名称
+    mChart->legend()->show();                          //显示图例
+    chartView->setChart(mChart);                        //向chartView中添加图标
+    chartView->resize(QSize(500,300));                  //重新设置chartView的大小
+    chartView->setRenderHints(QPainter::Antialiasing);//消除边缘，看起来平滑一些
+    ui->horizontalLayout_chart->addWidget(chartView);     //把chartView放到水平布局中（在ui中拖一个水平布局）
+
+}
+*/
 

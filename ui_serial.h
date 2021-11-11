@@ -76,6 +76,28 @@ public:
     QTableWidget *qTableWidget;
     QPushButton *pushButton_tab2_save;
     QPushButton *pushButton_tab2_clear;
+    QWidget *tab_4;
+    QGroupBox *groupBox_7;
+    QTableWidget *table_convert;
+    QPushButton *pushButton_tab3_clear;
+    QPushButton *pushButton_tab3_save;
+    QWidget *tab_3;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout_chart;
+    QWidget *layoutWidget2;
+    QHBoxLayout *horizontalLayout_2;
+    QSpacerItem *horizontalSpacer_4;
+    QCheckBox *ADC0;
+    QSpacerItem *horizontalSpacer_5;
+    QCheckBox *ADC1;
+    QSpacerItem *horizontalSpacer_6;
+    QCheckBox *ADC2;
+    QSpacerItem *horizontalSpacer_7;
+    QCheckBox *ADC3;
+    QSpacerItem *horizontalSpacer_8;
+    QCheckBox *ADC4;
+    QSpacerItem *horizontalSpacer_9;
+    QCheckBox *ADC5;
 
     void setupUi(QMainWindow *Serial)
     {
@@ -96,6 +118,9 @@ public:
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tabWidget->setGeometry(QRect(10, 0, 1121, 651));
+        tabWidget->setIconSize(QSize(30, 20));
+        tabWidget->setUsesScrollButtons(true);
+        tabWidget->setMovable(true);
         tabWidget->setTabBarAutoHide(false);
         tab = new QWidget();
         tab->setObjectName(QString::fromUtf8("tab"));
@@ -495,11 +520,130 @@ public:
 "                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
 "                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
         tabWidget->addTab(tab_2, QString());
+        tab_4 = new QWidget();
+        tab_4->setObjectName(QString::fromUtf8("tab_4"));
+        groupBox_7 = new QGroupBox(tab_4);
+        groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
+        groupBox_7->setGeometry(QRect(20, 10, 1081, 521));
+        groupBox_7->setStyleSheet(QString::fromUtf8("QGroupBox{\n"
+"background-color: rgb(255, 255, 255);\n"
+"\n"
+"border-width:2px;\n"
+"\n"
+"\n"
+"border-radius: 10px;\n"
+"\n"
+"border-color:rgb(221, 221, 221);\n"
+"\n"
+"margin-top:0.5ex;\n"
+"\n"
+"}\n"
+"\n"
+"QGroupBox::title{\n"
+"\n"
+"subcontrol-origin:margin;\n"
+"\n"
+"subcontrol-position:top left;\n"
+"\n"
+"left:10px;\n"
+"\n"
+"margin-left:0px;\n"
+"\n"
+"padding:0 1px;\n"
+"\n"
+"}"));
+        table_convert = new QTableWidget(groupBox_7);
+        table_convert->setObjectName(QString::fromUtf8("table_convert"));
+        table_convert->setGeometry(QRect(-5, 1, 1081, 521));
+        pushButton_tab3_clear = new QPushButton(tab_4);
+        pushButton_tab3_clear->setObjectName(QString::fromUtf8("pushButton_tab3_clear"));
+        pushButton_tab3_clear->setGeometry(QRect(740, 560, 111, 51));
+        pushButton_tab3_clear->setFont(font);
+        pushButton_tab3_clear->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}\n"
+"                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
+"                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
+        pushButton_tab3_save = new QPushButton(tab_4);
+        pushButton_tab3_save->setObjectName(QString::fromUtf8("pushButton_tab3_save"));
+        pushButton_tab3_save->setGeometry(QRect(900, 560, 111, 51));
+        pushButton_tab3_save->setFont(font);
+        pushButton_tab3_save->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}\n"
+"                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
+"                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
+        tabWidget->addTab(tab_4, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QString::fromUtf8("tab_3"));
+        horizontalLayoutWidget = new QWidget(tab_3);
+        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(30, 30, 1061, 531));
+        horizontalLayout_chart = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout_chart->setObjectName(QString::fromUtf8("horizontalLayout_chart"));
+        horizontalLayout_chart->setContentsMargins(0, 0, 0, 0);
+        layoutWidget2 = new QWidget(tab_3);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(30, 590, 701, 22));
+        horizontalLayout_2 = new QHBoxLayout(layoutWidget2);
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        horizontalSpacer_4 = new QSpacerItem(38, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_4);
+
+        ADC0 = new QCheckBox(layoutWidget2);
+        ADC0->setObjectName(QString::fromUtf8("ADC0"));
+
+        horizontalLayout_2->addWidget(ADC0);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_5);
+
+        ADC1 = new QCheckBox(layoutWidget2);
+        ADC1->setObjectName(QString::fromUtf8("ADC1"));
+
+        horizontalLayout_2->addWidget(ADC1);
+
+        horizontalSpacer_6 = new QSpacerItem(48, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_6);
+
+        ADC2 = new QCheckBox(layoutWidget2);
+        ADC2->setObjectName(QString::fromUtf8("ADC2"));
+
+        horizontalLayout_2->addWidget(ADC2);
+
+        horizontalSpacer_7 = new QSpacerItem(38, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_7);
+
+        ADC3 = new QCheckBox(layoutWidget2);
+        ADC3->setObjectName(QString::fromUtf8("ADC3"));
+
+        horizontalLayout_2->addWidget(ADC3);
+
+        horizontalSpacer_8 = new QSpacerItem(38, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_8);
+
+        ADC4 = new QCheckBox(layoutWidget2);
+        ADC4->setObjectName(QString::fromUtf8("ADC4"));
+
+        horizontalLayout_2->addWidget(ADC4);
+
+        horizontalSpacer_9 = new QSpacerItem(68, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_9);
+
+        ADC5 = new QCheckBox(layoutWidget2);
+        ADC5->setObjectName(QString::fromUtf8("ADC5"));
+
+        horizontalLayout_2->addWidget(ADC5);
+
+        tabWidget->addTab(tab_3, QString());
         Serial->setCentralWidget(centralwidget);
 
         retranslateUi(Serial);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(Serial);
@@ -541,12 +685,23 @@ public:
         checkBoxHex->setText(QApplication::translate("Serial", "\345\215\201\345\205\255\350\277\233\345\210\266\346\230\276\347\244\272", nullptr));
         groupBox_3->setTitle(QString());
         groupBox_4->setTitle(QString());
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("Serial", "data receive", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("Serial", "\346\225\260\346\215\256\346\216\245\346\224\266", nullptr));
         groupBox_5->setTitle(QString());
         groupBox_6->setTitle(QString());
         pushButton_tab2_save->setText(QApplication::translate("Serial", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
         pushButton_tab2_clear->setText(QApplication::translate("Serial", "\346\270\205\351\231\244\346\225\260\346\215\256", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Serial", "data process", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Serial", "\346\225\260\346\215\256\345\244\204\347\220\206", nullptr));
+        groupBox_7->setTitle(QString());
+        pushButton_tab3_clear->setText(QApplication::translate("Serial", "\346\270\205\347\251\272\346\225\260\346\215\256", nullptr));
+        pushButton_tab3_save->setText(QApplication::translate("Serial", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("Serial", "\346\225\260\346\215\256\350\275\254\346\215\242", nullptr));
+        ADC0->setText(QApplication::translate("Serial", "ADC0", nullptr));
+        ADC1->setText(QApplication::translate("Serial", "ADC1", nullptr));
+        ADC2->setText(QApplication::translate("Serial", "ADC2", nullptr));
+        ADC3->setText(QApplication::translate("Serial", "ADC3", nullptr));
+        ADC4->setText(QApplication::translate("Serial", "ADC4", nullptr));
+        ADC5->setText(QApplication::translate("Serial", "ADC5", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("Serial", "\345\233\276\345\203\217\346\230\276\347\244\272", nullptr));
     } // retranslateUi
 
 };
