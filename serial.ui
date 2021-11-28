@@ -45,7 +45,7 @@ background-color: rgb(245, 245, 245);
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -753,7 +753,7 @@ selection-background-color: darkgray;
         <x>10</x>
         <y>10</y>
         <width>341</width>
-        <height>501</height>
+        <height>541</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -794,7 +794,7 @@ padding:0 1px;
          <x>0</x>
          <y>0</y>
          <width>341</width>
-         <height>501</height>
+         <height>541</height>
         </rect>
        </property>
        <property name="layoutDirection">
@@ -815,7 +815,7 @@ selection-background-color: darkgray;
         <x>370</x>
         <y>10</y>
         <width>731</width>
-        <height>501</height>
+        <height>541</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -856,7 +856,7 @@ padding:0 1px;
          <x>0</x>
          <y>0</y>
          <width>731</width>
-         <height>501</height>
+         <height>541</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -869,8 +869,8 @@ selection-background-color: darkgray;</string>
      <widget class="QPushButton" name="pushButton_tab2_save">
       <property name="geometry">
        <rect>
-        <x>930</x>
-        <y>540</y>
+        <x>970</x>
+        <y>560</y>
         <width>111</width>
         <height>51</height>
        </rect>
@@ -893,8 +893,8 @@ selection-background-color: darkgray;</string>
      <widget class="QPushButton" name="pushButton_tab2_clear">
       <property name="geometry">
        <rect>
-        <x>760</x>
-        <y>540</y>
+        <x>820</x>
+        <y>560</y>
         <width>111</width>
         <height>51</height>
        </rect>
@@ -925,7 +925,7 @@ selection-background-color: darkgray;</string>
         <x>20</x>
         <y>10</y>
         <width>1081</width>
-        <height>521</height>
+        <height>601</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -966,58 +966,10 @@ padding:0 1px;
          <x>-5</x>
          <y>1</y>
          <width>1081</width>
-         <height>521</height>
+         <height>601</height>
         </rect>
        </property>
       </widget>
-     </widget>
-     <widget class="QPushButton" name="pushButton_tab3_clear">
-      <property name="geometry">
-       <rect>
-        <x>740</x>
-        <y>560</y>
-        <width>111</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}
-                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}
-                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}</string>
-      </property>
-      <property name="text">
-       <string>清空数据</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_tab3_save">
-      <property name="geometry">
-       <rect>
-        <x>900</x>
-        <y>560</y>
-        <width>111</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}
-                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}
-                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}</string>
-      </property>
-      <property name="text">
-       <string>保存数据</string>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">

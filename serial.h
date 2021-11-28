@@ -47,10 +47,6 @@ private slots:
 
     void on_pushButton_tab2_save_clicked();
 
-    void on_pushButton_tab3_clear_clicked();
-
-    void on_pushButton_tab3_save_clicked();
-
 private:
     /*---------------function---------------*/
 

@@ -1,4 +1,4 @@
-/********************************************************************************
+﻿/********************************************************************************
 ** Form generated from reading UI file 'serial.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.10
@@ -79,8 +79,6 @@ public:
     QWidget *tab_4;
     QGroupBox *groupBox_7;
     QTableWidget *table_convert;
-    QPushButton *pushButton_tab3_clear;
-    QPushButton *pushButton_tab3_save;
     QWidget *tab_3;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout_chart;
@@ -555,20 +553,6 @@ public:
         table_convert = new QTableWidget(groupBox_7);
         table_convert->setObjectName(QString::fromUtf8("table_convert"));
         table_convert->setGeometry(QRect(-5, 1, 1081, 521));
-        pushButton_tab3_clear = new QPushButton(tab_4);
-        pushButton_tab3_clear->setObjectName(QString::fromUtf8("pushButton_tab3_clear"));
-        pushButton_tab3_clear->setGeometry(QRect(740, 560, 111, 51));
-        pushButton_tab3_clear->setFont(font);
-        pushButton_tab3_clear->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}\n"
-"                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
-"                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
-        pushButton_tab3_save = new QPushButton(tab_4);
-        pushButton_tab3_save->setObjectName(QString::fromUtf8("pushButton_tab3_save"));
-        pushButton_tab3_save->setGeometry(QRect(900, 560, 111, 51));
-        pushButton_tab3_save->setFont(font);
-        pushButton_tab3_save->setStyleSheet(QString::fromUtf8("QPushButton{background-color: rgb(225, 225, 225);border:1px groove gray;border-radius:4px;padding:1px 4px;border-style: outset;}\n"
-"                                       QPushButton:hover{background-color:rgb(229, 241, 251); color: black;}\n"
-"                                       QPushButton:pressed{background-color:rgb(204, 228, 247);border-style: inset;}"));
         tabWidget->addTab(tab_4, QString());
         tab_3 = new QWidget();
         tab_3->setObjectName(QString::fromUtf8("tab_3"));
@@ -692,8 +676,6 @@ public:
         pushButton_tab2_clear->setText(QApplication::translate("Serial", "\346\270\205\351\231\244\346\225\260\346\215\256", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Serial", "\346\225\260\346\215\256\345\244\204\347\220\206", nullptr));
         groupBox_7->setTitle(QString());
-        pushButton_tab3_clear->setText(QApplication::translate("Serial", "\346\270\205\347\251\272\346\225\260\346\215\256", nullptr));
-        pushButton_tab3_save->setText(QApplication::translate("Serial", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("Serial", "\346\225\260\346\215\256\350\275\254\346\215\242", nullptr));
         ADC0->setText(QApplication::translate("Serial", "ADC0", nullptr));
         ADC1->setText(QApplication::translate("Serial", "ADC1", nullptr));

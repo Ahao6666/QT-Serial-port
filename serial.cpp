@@ -40,12 +40,12 @@ void Serial::table_init(){
     ui->qTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->qTableWidget->setWindowTitle("QTableWidget");
     QStringList m_Header;
-    m_Header<<QString("Time")<<QString("ADC0")<<QString("ADC1")<<QString("ADC2")<<QString("ADC3")<<QString("ADC4")<<QString("ADC5")<<QString("PWM")<<QString("motor speed(r/s)");
+    m_Header<<QString("Time")<<QString("Fx")<<QString("Fy")<<QString("Fz")<<QString("Mx")<<QString("My")<<QString("Mz")<<QString("PWM")<<QString("motor speed(r/s)");
     ui->qTableWidget->setHorizontalHeaderLabels(m_Header);              //添加横向表头
     ui->qTableWidget->verticalHeader()->setVisible(false);               //纵向表头不可视化
     ui->qTableWidget->horizontalHeader()->setVisible(true);             //横向表头可视化
     ui->qTableWidget->setShowGrid(true);                               //隐藏栅格
-    ui->qTableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);      //设置表格选择方式：设置表格为单元选中
+    ui->qTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);      //设置表格选择方式：设置表格为单元选中
     ui->qTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);         //选择目标方式
     ui->qTableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);          //设置水平滚动条
     ui->qTableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);            //设置垂直滚动条
@@ -155,8 +155,6 @@ void Serial::ButtonClear()
 void Serial::on_pushButton_tab2_clear_clicked(){
     ui->qTableWidget->clear();
     ui->adc_data->clear();
-}
-void Serial::on_pushButton_tab3_clear_clicked(){
     ui->table_convert->clear();
 }
 /*--------------------------
@@ -190,26 +188,11 @@ void Serial::on_pushButton_tab2_save_clicked(){
             QAxObject *workbooks = excel->querySubObject("WorkBooks");//获取工作簿集合
             workbooks->dynamicCall("Add");//新建一个工作簿
             QAxObject *workbook = excel->querySubObject("ActiveWorkBook");//获取当前工作簿
-            QAxObject *worksheet = workbook->querySubObject("Worksheets(int)", 1);
+            QAxObject *worksheets = workbook->querySubObject("WorkSheets");
+            QAxObject *worksheet_d = worksheets->querySubObject("Item(int)",1);
+            worksheet_d->setProperty("Name", "数字量");
             int i,j,colcount=ui->qTableWidget->columnCount();
             QAxObject *cell,*col;
-
-            //标题行
-            cell=worksheet->querySubObject("Cells(int,int)", 1, 1);
-            cell->dynamicCall("SetValue(const QString&)", "ADC convert data");
-            cell->querySubObject("Font")->setProperty("Size", 18);
-            //调整行高
-            worksheet->querySubObject("Range(const QString&)", "1:1")->setProperty("RowHeight", 30);
-            //合并标题行
-            QString cellTitle;
-            cellTitle.append("A1:");
-            cellTitle.append(QChar(colcount - 1 + 'A'));
-            cellTitle.append(QString::number(1));
-            QAxObject *range = worksheet->querySubObject("Range(const QString&)", cellTitle);
-            range->setProperty("WrapText", true);
-            range->setProperty("MergeCells", true);
-            range->setProperty("HorizontalAlignment", -4108);//xlCenter
-            range->setProperty("VerticalAlignment", -4108);//xlCenter
 
             //列标题
             for(i=0;i<colcount;i++)
@@ -218,9 +201,9 @@ void Serial::on_pushButton_tab2_save_clicked(){
                 columnName.append(QChar(i  + 'A'));
                 columnName.append(":");
                 columnName.append(QChar(i + 'A'));
-                col = worksheet->querySubObject("Columns(const QString&)", columnName);
+                col = worksheet_d->querySubObject("Columns(const QString&)", columnName);
                 col->setProperty("ColumnWidth", ui->qTableWidget->columnWidth(i)/6);
-                cell=worksheet->querySubObject("Cells(int,int)", 2, i+1);
+                cell=worksheet_d->querySubObject("Cells(int,int)", 1, i+1);
                 columnName=ui->qTableWidget->horizontalHeaderItem(i)->text();
                 cell->dynamicCall("SetValue(const QString&)", columnName);
                 cell->querySubObject("Font")->setProperty("Bold", true);
@@ -233,7 +216,7 @@ void Serial::on_pushButton_tab2_save_clicked(){
             for(i=0;i<ui->qTableWidget->rowCount();i++){
                 for (j=0;j<colcount;j++)
                 {
-                    worksheet->querySubObject("Cells(int,int)", i+3, j+1)->dynamicCall("SetValue(const QString&)", ui->qTableWidget->item(i,j)?ui->qTableWidget->item(i,j)->text():"");
+                    worksheet_d->querySubObject("Cells(int,int)", i+2, j+1)->dynamicCall("SetValue(const QString&)", ui->qTableWidget->item(i,j)?ui->qTableWidget->item(i,j)->text():"");
                 }
             }
 
@@ -242,16 +225,55 @@ void Serial::on_pushButton_tab2_save_clicked(){
             lrange.append("A2:");
             lrange.append(colcount - 1 + 'A');
             lrange.append(QString::number(ui->qTableWidget->rowCount() + 2));
-            range = worksheet->querySubObject("Range(const QString&)", lrange);
-            range->querySubObject("Borders")->setProperty("LineStyle", QString::number(1));
-            range->querySubObject("Borders")->setProperty("Color", QColor(0, 0, 0));
 
             //调整数据区行高
             QString rowsName;
             rowsName.append("2:");
             rowsName.append(QString::number(ui->qTableWidget->rowCount() + 2));
-            range = worksheet->querySubObject("Range(const QString&)", rowsName);
-            range->setProperty("RowHeight", 20);
+
+            //---------保存物理量表单,该表单在数字量表单前面---------
+            QAxObject *pTempSheet = worksheets->querySubObject("Item(int)",1);
+            worksheets->querySubObject("Add(QVariant)",pTempSheet->asVariant());
+            QAxObject *worksheet_p = worksheets->querySubObject("Item(int)",1);     //创建物理量表单
+            worksheet_p->setProperty("Name", "物理量");
+
+            //列标题
+            for(i=0;i<colcount;i++)
+            {
+                QString columnName;
+                columnName.append(QChar(i  + 'A'));
+                columnName.append(":");
+                columnName.append(QChar(i + 'A'));
+                col = worksheet_p->querySubObject("Columns(const QString&)", columnName);
+                col->setProperty("ColumnWidth", ui->table_convert->columnWidth(i)/6);
+                cell=worksheet_p->querySubObject("Cells(int,int)", 1, i+1);
+                columnName=ui->table_convert->horizontalHeaderItem(i)->text();
+                cell->dynamicCall("SetValue(const QString&)", columnName);
+                cell->querySubObject("Font")->setProperty("Bold", true);
+                cell->querySubObject("Interior")->setProperty("Color",QColor(191, 191, 191));
+                cell->setProperty("HorizontalAlignment", -4108);//xlCenter
+                cell->setProperty("VerticalAlignment", -4108);//xlCenter
+            }
+
+            //数据区
+            for(i=0;i<ui->table_convert->rowCount();i++){
+                for (j=0;j<colcount;j++)
+                {
+                    worksheet_p->querySubObject("Cells(int,int)", i+2, j+1)->dynamicCall("SetValue(const QString&)", ui->table_convert->item(i,j)?ui->table_convert->item(i,j)->text():"");
+                }
+            }
+
+            //画框线
+            lrange.append("A2:");
+            lrange.append(colcount - 1 + 'A');
+            lrange.append(QString::number(ui->table_convert->rowCount() + 2));
+
+            //调整数据区行高
+            rowsName.append("2:");
+            rowsName.append(QString::number(ui->table_convert->rowCount() + 2));
+
+
+            //----------保存文件--------
             workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(fileName));//保存至fileName
             workbook->dynamicCall("Close()");//关闭工作簿
             excel->dynamicCall("Quit()");//关闭excel
@@ -271,9 +293,8 @@ void Serial::on_pushButton_tab2_save_clicked(){
 }
 /*--------------------------
  *      将表格数据保存到EXCEL文件tab3_save
- * ------------------------*/
 void Serial::on_pushButton_tab3_save_clicked(){
-    QString fileName = QFileDialog::getSaveFileName(ui->qTableWidget, "保存",
+    QString fileName = QFileDialog::getSaveFileName(ui->table_convert, "保存",
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             QStringLiteral("Excel 文件(*.xlsx)"));
     if (fileName!="")
@@ -287,7 +308,7 @@ void Serial::on_pushButton_tab3_save_clicked(){
             workbooks->dynamicCall("Add");//新建一个工作簿
             QAxObject *workbook = excel->querySubObject("ActiveWorkBook");//获取当前工作簿
             QAxObject *worksheet = workbook->querySubObject("Worksheets(int)", 1);
-            int i,j,colcount=ui->qTableWidget->columnCount();
+            int i,j,colcount=ui->table_convert->columnCount();
             QAxObject *cell,*col;
 
             //标题行
@@ -315,9 +336,9 @@ void Serial::on_pushButton_tab3_save_clicked(){
                 columnName.append(":");
                 columnName.append(QChar(i + 'A'));
                 col = worksheet->querySubObject("Columns(const QString&)", columnName);
-                col->setProperty("ColumnWidth", ui->qTableWidget->columnWidth(i)/6);
+                col->setProperty("ColumnWidth", ui->table_convert->columnWidth(i)/6);
                 cell=worksheet->querySubObject("Cells(int,int)", 2, i+1);
-                columnName=ui->qTableWidget->horizontalHeaderItem(i)->text();
+                columnName=ui->table_convert->horizontalHeaderItem(i)->text();
                 cell->dynamicCall("SetValue(const QString&)", columnName);
                 cell->querySubObject("Font")->setProperty("Bold", true);
                 cell->querySubObject("Interior")->setProperty("Color",QColor(191, 191, 191));
@@ -326,10 +347,10 @@ void Serial::on_pushButton_tab3_save_clicked(){
             }
 
             //数据区
-            for(i=0;i<ui->qTableWidget->rowCount();i++){
+            for(i=0;i<ui->table_convert->rowCount();i++){
                 for (j=0;j<colcount;j++)
                 {
-                    worksheet->querySubObject("Cells(int,int)", i+3, j+1)->dynamicCall("SetValue(const QString&)", ui->qTableWidget->item(i,j)?ui->qTableWidget->item(i,j)->text():"");
+                    worksheet->querySubObject("Cells(int,int)", i+3, j+1)->dynamicCall("SetValue(const QString&)", ui->table_convert->item(i,j)?ui->table_convert->item(i,j)->text():"");
                 }
             }
 
@@ -337,7 +358,7 @@ void Serial::on_pushButton_tab3_save_clicked(){
             QString lrange;
             lrange.append("A2:");
             lrange.append(colcount - 1 + 'A');
-            lrange.append(QString::number(ui->qTableWidget->rowCount() + 2));
+            lrange.append(QString::number(ui->table_convert->rowCount() + 2));
             range = worksheet->querySubObject("Range(const QString&)", lrange);
             range->querySubObject("Borders")->setProperty("LineStyle", QString::number(1));
             range->querySubObject("Borders")->setProperty("Color", QColor(0, 0, 0));
@@ -345,7 +366,7 @@ void Serial::on_pushButton_tab3_save_clicked(){
             //调整数据区行高
             QString rowsName;
             rowsName.append("2:");
-            rowsName.append(QString::number(ui->qTableWidget->rowCount() + 2));
+            rowsName.append(QString::number(ui->table_convert->rowCount() + 2));
             range = worksheet->querySubObject("Range(const QString&)", rowsName);
             range->setProperty("RowHeight", 20);
             workbook->dynamicCall("SaveAs(const QString&)",QDir::toNativeSeparators(fileName));//保存至fileName
@@ -365,6 +386,8 @@ void Serial::on_pushButton_tab3_save_clicked(){
         }
     }
 }
+*/
+
 /*--------------------------
  *      自动清理
  * ------------------------*/
@@ -702,11 +725,49 @@ void Serial::table_show(QString serial_temp,int row){
     ui->qTableWidget->item(row,8)->setTextAlignment(Qt::AlignCenter);             //数据中间对齐
     ui->table_convert->item(row,8)->setTextAlignment(Qt::AlignCenter);
 }
-void Serial::table_show_tab3(int row, int col, int adc){            //-----------还需要修改---
-    float Fz_a = adc / 4096 * 3.3;
-    float Fz_N = 206.2 * Fz_a;
-    ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Fz_N)));
+void Serial::table_show_tab3(int row, int col, int adc){        //------可能有问题----------
+    switch(col) {
+    case 1 :     //Fx
+    {
+        float Fx_N = (adc-1976.4) / 41.0 * 9.8;
+        ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Fx_N)));
+    }
+        break;
+    case 2 :     //Fy
+    {
+        float Fy_N = (adc-1976.4) / 41.0 * 9.8;
+        ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Fy_N)));
+        break;
+    }
+    case 3:     //Fz
+    {
+        float Fz_N = (adc-2133) / 20.0 * 9.8;
+        ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Fz_N)));
+        break;
+    }
+    case 4:     //Mx
+    {
+        float Mx_Nm = (adc-2133.5) / 204.8;
+        ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Mx_Nm)));
+        break;
+    }
+    case 5:     //My
+    {
+        float My_Nm = (adc-2101) / 204.8;
+        ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(My_Nm)));
+        break;
+    }
+    case 6:     //Mz
+    {
+        float Mz_Nm = (adc-2111) / 102.4;
+        ui->table_convert->setItem(row,col,new QTableWidgetItem(QString::number(Mz_Nm)));
+        break;
+    }
+    default:
+        QMessageBox::warning(NULL , QStringLiteral("提示"), QStringLiteral("物理量转换错误"));
+    }
     ui->table_convert->item(row,col)->setTextAlignment(Qt::AlignCenter);
+
 }
 /*
 void Serial::chart_show(int channel, int adc){
